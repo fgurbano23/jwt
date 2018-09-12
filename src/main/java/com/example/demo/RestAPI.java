@@ -1,11 +1,13 @@
 package com.example.demo;
 
 import ch.qos.logback.core.subst.Token;
+import com.example.demo.Authentication.Auth;
 import com.example.demo.Authentication.Authentication;
 import com.example.demo.models.Account;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -19,10 +21,13 @@ import java.util.Date;
 @RestController
 public class RestAPI {
 
+    @Autowired
+    Auth auth;
+
   @RequestMapping ( value = "auth", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
   public Object response(@RequestBody  Account account) {
       // System.out.println( account.getUsername() + account.getPassword());
-      Authentication auth = new Authentication();
+
       boolean status = auth.isValid(account.getUsername(), account.getPassword());
       if (status) {
           String KEY = "mySecretKey";
